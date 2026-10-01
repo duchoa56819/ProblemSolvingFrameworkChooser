@@ -2,6 +2,7 @@ import React from 'react';
 import { Framework } from '../../types/framework';
 import { CATEGORY_METADATA } from '../../data/frameworks';
 import { Clock, Users, Bookmark, Play, Check } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface FrameworkCardProps {
   framework: Framework;
@@ -22,6 +23,7 @@ export const FrameworkCard: React.FC<FrameworkCardProps> = ({
   onSelect,
   onOpenCanvas
 }) => {
+  const { t } = useLanguage();
   const catMeta = CATEGORY_METADATA[framework.category];
 
   return (
@@ -33,7 +35,7 @@ export const FrameworkCard: React.FC<FrameworkCardProps> = ({
         {/* Top Badges & Actions */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${catMeta.badgeColor}`}>
-            {catMeta.name.split(' ')[0]}
+            {t.categories[framework.category]}
           </span>
 
           <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
@@ -45,7 +47,7 @@ export const FrameworkCard: React.FC<FrameworkCardProps> = ({
                   ? 'bg-indigo-600 text-white'
                   : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'
               }`}
-              title={isCompared ? 'Remove from compare' : 'Compare side-by-side'}
+              title={isCompared ? t.card.removeCompare : t.card.compare}
             >
               {isCompared ? <Check className="w-3.5 h-3.5" /> : <span className="text-[11px] px-0.5 font-bold">VS</span>}
             </button>
@@ -58,7 +60,7 @@ export const FrameworkCard: React.FC<FrameworkCardProps> = ({
                   ? 'text-amber-400 bg-amber-950/40'
                   : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'
               }`}
-              title={isBookmarked ? 'Remove bookmark' : 'Bookmark framework'}
+              title={isBookmarked ? t.card.removeBookmark : t.card.bookmark}
             >
               <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
             </button>
@@ -104,7 +106,7 @@ export const FrameworkCard: React.FC<FrameworkCardProps> = ({
               }}
               className="w-full py-1.5 px-2 bg-indigo-600/20 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-500 text-indigo-300 hover:text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
             >
-              <Play className="w-3 h-3 fill-current" /> Interactive Canvas
+              <Play className="w-3 h-3 fill-current" /> {t.card.interactiveCanvas}
             </button>
           </div>
         )}

@@ -1,0 +1,297 @@
+import { Translations } from './types';
+
+export const TRANSLATIONS: Record<'en' | 'vi', Translations> = {
+  en: {
+    appName: 'FrameworkChooser',
+    appTagline: 'Diagnostic & Methods Engine',
+    searchPlaceholder: 'Search by problem, name, author, or keyword (e.g. 5 Whys, Toyota)...',
+    views: {
+      library: 'Library',
+      matrix: '2D Map',
+      canvases: 'Canvases'
+    },
+    hero: {
+      badge: 'Interactive Diagnostic Engine • 24 Methodologies Supported',
+      titleStart: 'Never Use the Wrong ',
+      titleHighlight: 'Problem-Solving',
+      titleEnd: ' Tool Again.',
+      subtitle: 'Diagnose your operational, strategic, or engineering roadblock in 60 seconds. Get an irrefutable methodology match with ready-to-run interactive canvases.',
+      ctaFinder: 'Run 60s Framework Finder',
+      cta5Whys: 'Quick 5 Whys Canvas',
+      ctaRice: 'RICE Calculator',
+      quickPillars: 'Quick Pillars:'
+    },
+    filter: {
+      allMethods: 'All Methods',
+      anyComplexity: 'Any Complexity',
+      anyTimeframe: 'Any Timeframe',
+      showing: 'Showing',
+      of: 'of',
+      frameworks: 'frameworks',
+      bookmarkedOnly: '(Bookmarked only)',
+      clearFilters: 'Clear Filters',
+      noResultsTitle: 'No matching frameworks found',
+      noResultsDesc: 'Try clearing your search terms or expanding your filter criteria.'
+    },
+    card: {
+      compare: 'Compare side-by-side',
+      removeCompare: 'Remove from compare',
+      bookmark: 'Bookmark framework',
+      removeBookmark: 'Remove bookmark',
+      interactiveCanvas: 'Interactive Canvas',
+      viewPlaybook: 'View Playbook'
+    },
+    categories: {
+      'root-cause': 'Root Cause & Diagnostics',
+      'strategic': 'Strategic & Sense-Making',
+      'innovation': 'Human-Centered & Innovation',
+      'quality': 'Continuous Quality & Systems',
+      'prioritization': 'Prioritization & Trade-offs'
+    },
+    complexity: {
+      Beginner: 'Beginner',
+      Intermediate: 'Intermediate',
+      Advanced: 'Advanced'
+    },
+    matrix: {
+      title: '2D Problem Space Landscape Map',
+      subtitle: 'Explore frameworks positioned across Analytical Rigor vs. Creative Divergence and Problem Complexity.',
+      all: 'All',
+      yAxisTop: '▲ High Complexity & Emergence (Turbulent / Human)',
+      yAxisBottom: '▼ Clear Deterministic (Known / Repeatable)',
+      xAxisLeft: '◄ Pure Analytical & Deductive',
+      xAxisRight: 'Pure Creative & Generative ►',
+      watermarkTopLeft: 'Strategic Decomposition',
+      watermarkTopRight: 'Emergent Innovation',
+      watermarkBottomLeft: 'Root Cause & Variance Reduction',
+      watermarkBottomRight: 'Prioritization & Fast Ideation',
+      viewPlaybook: 'View Playbook',
+      canvasBtn: 'Canvas'
+    },
+    canvasesHub: {
+      title: 'Interactive Problem-Solving Canvases',
+      subtitle: "Don't just read about frameworks—use them right here in your browser with real-time calculations and markdown export.",
+      openBtn: 'Open Canvas'
+    },
+    modal: {
+      close: 'Close',
+      copy: 'Copy',
+      copied: 'Copied',
+      exportReport: 'Export Report',
+      overviewTab: 'Overview & Scope',
+      stepsTab: 'Step-by-Step Playbook',
+      questionsTab: 'Diagnostic Questions',
+      caseStudyTab: 'Real-World Case Study',
+      bestFor: 'Best Suited For',
+      whenToAvoid: 'When to Explicitly Avoid',
+      timeframe: 'Timeframe',
+      teamSize: 'Ideal Team Size',
+      complexityLevel: 'Complexity',
+      toolsNeeded: 'Required Tools',
+      strengths: 'Key Strengths',
+      tradeoffs: 'Known Trade-offs & Pitfalls',
+      proTip: 'Pro-Tip',
+      questionsIntro: 'Use these critical diagnostic questions in your team discovery sessions:',
+      caseChallenge: 'The Challenge / Scenario:',
+      caseApplication: 'How Framework Was Applied:',
+      caseOutcome: 'The Measurable Outcome:',
+      launchCanvas: 'Launch Canvas'
+    },
+    wizard: {
+      title: 'Smart Framework Finder',
+      stepPrefix: 'Diagnostic Step',
+      of: 'of',
+      completeTitle: 'Diagnostic complete & matched!',
+      reset: 'Reset',
+      previousStep: 'Previous Step',
+      optimalMatch: 'Optimal Match Identified',
+      affinityMatch: 'Affinity Match',
+      whyFits: 'Why This Fits Your Challenge',
+      domain: 'Domain',
+      timeframe: 'Timeframe',
+      team: 'Team',
+      readyToExecute: 'Ready to Execute?',
+      readyToExecuteDesc: 'Open the interactive workspace to run this framework immediately.',
+      launchCanvas: 'Launch Interactive Canvas',
+      viewPlaybook: 'View Complete Playbook',
+      blueprintTitle: 'Immediate 4-Step Execution Blueprint',
+      runnerUpsTitle: 'Viable Runner-Up Alternatives',
+      avoidTitle: 'Frameworks to Avoid in This Context',
+      noAvoid: 'No severe methodology mismatches flagged.',
+      retake: 'Take diagnostic again with different parameters'
+    },
+    compareModal: {
+      title: 'Side-by-Side Framework Comparison',
+      comparingPrefix: 'Comparing',
+      frameworkWord: 'framework',
+      frameworksWord: 'frameworks',
+      clearAll: 'Clear All',
+      emptyText: 'No frameworks selected for comparison. Click the "VS" button on any framework card to add it here.',
+      dimension: 'Dimension',
+      category: 'Category',
+      origin: 'Origin & Pioneer',
+      tagline: 'Core Tagline',
+      cynefinDomain: 'Cynefin Domain',
+      bestFor: 'Best Applied For',
+      whenToAvoid: 'When to Avoid',
+      timeCommitment: 'Time Commitment',
+      teamStructure: 'Team Structure',
+      complexity: 'Complexity Level',
+      interactiveCanvas: 'Interactive Canvas',
+      openCanvas: 'Open Canvas',
+      none: 'None'
+    },
+    footer: {
+      openSource: 'Open Source Decision Engine',
+      githubRepo: 'GitHub Repository',
+      takeDiagnostic: 'Take Diagnostic'
+    }
+  },
+
+  vi: {
+    appName: 'FrameworkChooser',
+    appTagline: 'Bộ công cụ Chẩn đoán & Phương pháp luận',
+    searchPlaceholder: 'Tìm theo vấn đề, tên phương pháp, tác giả, hoặc từ khóa (ví dụ: 5 Whys, Toyota)...',
+    views: {
+      library: 'Thư viện',
+      matrix: 'Bản đồ 2D',
+      canvases: 'Công cụ thực hành'
+    },
+    hero: {
+      badge: 'Công cụ chẩn đoán tương tác • Hỗ trợ 24 phương pháp luận chuẩn quốc tế',
+      titleStart: 'Đừng Bao Giờ Dùng Sai Công Cụ ',
+      titleHighlight: 'Giải Quyết Vấn Đề',
+      titleEnd: ' Nữa.',
+      subtitle: 'Chẩn đoán thách thức vận hành, chiến lược hoặc kỹ thuật của bạn trong 60 giây. Tìm ra phương pháp phù hợp nhất với các bảng thực hành tương tác ngay trên trình duyệt.',
+      ctaFinder: 'Chạy Bộ Tìm Kiếm 60 Giây',
+      cta5Whys: 'Bảng 5 Whys Nhanh',
+      ctaRice: 'Máy Tính Điểm RICE',
+      quickPillars: 'Các nhóm trụ cột:'
+    },
+    filter: {
+      allMethods: 'Tất cả phương pháp',
+      anyComplexity: 'Mọi độ phức tạp',
+      anyTimeframe: 'Mọi thời gian',
+      showing: 'Đang hiển thị',
+      of: 'trên',
+      frameworks: 'phương pháp',
+      bookmarkedOnly: '(Chỉ mục đã lưu)',
+      clearFilters: 'Xóa bộ lọc',
+      noResultsTitle: 'Không tìm thấy phương pháp phù hợp',
+      noResultsDesc: 'Hãy thử xóa từ khóa tìm kiếm hoặc mở rộng tiêu chí lọc của bạn.'
+    },
+    card: {
+      compare: 'So sánh song song',
+      removeCompare: 'Bỏ khỏi so sánh',
+      bookmark: 'Lưu phương pháp',
+      removeBookmark: 'Bỏ lưu',
+      interactiveCanvas: 'Bảng tương tác',
+      viewPlaybook: 'Xem hướng dẫn'
+    },
+    categories: {
+      'root-cause': 'Nguyên nhân gốc rễ & Chẩn đoán',
+      'strategic': 'Chiến lược & Nhận thức bối cảnh',
+      'innovation': 'Đổi mới sáng tạo & Con người',
+      'quality': 'Chất lượng liên tục & Hệ thống',
+      'prioritization': 'Ưu tiên hóa & Đánh đổi'
+    },
+    complexity: {
+      Beginner: 'Cơ bản',
+      Intermediate: 'Trung cấp',
+      Advanced: 'Nâng cao'
+    },
+    matrix: {
+      title: 'Bản đồ không gian vấn đề 2D',
+      subtitle: 'Khám phá vị trí các phương pháp giữa Trục Tư duy Phân tích vs. Sáng tạo và Trục Độ phức tạp vấn đề.',
+      all: 'Tất cả',
+      yAxisTop: '▲ Độ phức tạp & Biến đổi cao (Hỗn loạn / Hệ thống con người)',
+      yAxisBottom: '▼ Rõ ràng & Xác định (Đã biết quy luật / Có thể lặp lại)',
+      xAxisLeft: '◄ Thuần Phân tích & Suy diễn Logic',
+      xAxisRight: 'Thuần Sáng tạo & Phát kiến Mới ►',
+      watermarkTopLeft: 'Phân rã Chiến lược',
+      watermarkTopRight: 'Đột phá Thích ứng',
+      watermarkBottomLeft: 'Gốc rễ & Triệt tiêu Biến động',
+      watermarkBottomRight: 'Ưu tiên & Ý tưởng Nhanh',
+      viewPlaybook: 'Xem hướng dẫn',
+      canvasBtn: 'Bảng thực hành'
+    },
+    canvasesHub: {
+      title: 'Các bảng thực hành giải quyết vấn đề trực tiếp',
+      subtitle: 'Không chỉ đọc lý thuyết—hãy áp dụng trực tiếp ngay trên trình duyệt với tính toán tự động và xuất báo cáo Markdown.',
+      openBtn: 'Mở bảng thực hành'
+    },
+    modal: {
+      close: 'Đóng',
+      copy: 'Sao chép',
+      copied: 'Đã chép',
+      exportReport: 'Xuất báo cáo',
+      overviewTab: 'Tổng quan & Phạm vi',
+      stepsTab: 'Các bước thực hiện',
+      questionsTab: 'Câu hỏi chẩn đoán',
+      caseStudyTab: 'Tình huống thực tế',
+      bestFor: 'Phù hợp nhất cho',
+      whenToAvoid: 'Cần tránh khi',
+      timeframe: 'Thời gian',
+      teamSize: 'Quy mô nhóm lý tưởng',
+      complexityLevel: 'Độ phức tạp',
+      toolsNeeded: 'Công cụ cần thiết',
+      strengths: 'Điểm mạnh chính',
+      tradeoffs: 'Đánh đổi & Rủi ro tiềm ẩn',
+      proTip: 'Mẹo thực chiến',
+      questionsIntro: 'Sử dụng các câu hỏi gợi mở này trong các buổi thảo luận cùng nhóm:',
+      caseChallenge: 'Bối cảnh / Thách thức:',
+      caseApplication: 'Cách áp dụng phương pháp:',
+      caseOutcome: 'Kết quả đo lường được:',
+      launchCanvas: 'Mở bảng tương tác'
+    },
+    wizard: {
+      title: 'Bộ Chẩn Đoán Tìm Phương Pháp Phù Hợp',
+      stepPrefix: 'Bước chẩn đoán',
+      of: 'trên',
+      completeTitle: 'Chẩn đoán hoàn tất & Đã tìm thấy phương pháp tối ưu!',
+      reset: 'Làm lại',
+      previousStep: 'Quay lại bước trước',
+      optimalMatch: 'Khuyến Nghị Tối Ưu Nhất',
+      affinityMatch: 'Độ tương thích',
+      whyFits: 'Tại sao phương pháp này phù hợp với bạn',
+      domain: 'Miền không gian',
+      timeframe: 'Thời gian',
+      team: 'Quy mô nhóm',
+      readyToExecute: 'Sẵn sàng bắt đầu?',
+      readyToExecuteDesc: 'Mở ngay không gian tương tác để áp dụng phương pháp này cho vấn đề của bạn.',
+      launchCanvas: 'Khởi chạy bảng tương tác',
+      viewPlaybook: 'Xem cẩm nang chi tiết',
+      blueprintTitle: 'Kế hoạch hành động 4 bước ngay lập tức',
+      runnerUpsTitle: 'Các phương án thay thế khả thi',
+      avoidTitle: 'Các phương pháp nên tránh trong ngữ cảnh này',
+      noAvoid: 'Không phát hiện xung đột phương pháp nghiêm trọng.',
+      retake: 'Thực hiện lại chẩn đoán với tham số khác'
+    },
+    compareModal: {
+      title: 'So sánh song song các phương pháp',
+      comparingPrefix: 'Đang so sánh',
+      frameworkWord: 'phương pháp',
+      frameworksWord: 'phương pháp',
+      clearAll: 'Xóa tất cả',
+      emptyText: 'Chưa có phương pháp nào được chọn để so sánh. Nhấp vào nút "VS" trên bất kỳ thẻ nào để thêm vào đây.',
+      dimension: 'Tiêu chí so sánh',
+      category: 'Phân loại',
+      origin: 'Tác giả & Xuất xứ',
+      tagline: 'Khẩu hiệu cốt lõi',
+      cynefinDomain: 'Miền Cynefin',
+      bestFor: 'Ứng dụng tốt nhất khi',
+      whenToAvoid: 'Cần tránh khi',
+      timeCommitment: 'Thời gian cam kết',
+      teamStructure: 'Cơ cấu nhóm',
+      complexity: 'Độ phức tạp',
+      interactiveCanvas: 'Công cụ tương tác',
+      openCanvas: 'Mở bảng',
+      none: 'Không có'
+    },
+    footer: {
+      openSource: 'Hệ thống ra quyết định mã nguồn mở',
+      githubRepo: 'Kho lưu trữ GitHub',
+      takeDiagnostic: 'Làm bài chẩn đoán'
+    }
+  }
+};

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, Award, Copy, Download, CheckCircle2 } from 'lucide-react';
 import { copyToClipboard, downloadFile } from '../../utils/export';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface Initiative {
   id: string;
@@ -12,41 +13,79 @@ interface Initiative {
 }
 
 export const RiceCanvas: React.FC = () => {
-  const [initiatives, setInitiatives] = useState<Initiative[]>([
-    {
-      id: '1',
-      name: 'One-Tap Biometric Authentication',
-      reach: 18000,
-      impact: 2.0,
-      confidence: 1.0,
-      effort: 1.0
-    },
-    {
-      id: '2',
-      name: 'AI Smart Search Auto-Suggestions',
-      reach: 25000,
-      impact: 1.0,
-      confidence: 0.8,
-      effort: 2.0
-    },
-    {
-      id: '3',
-      name: 'Dark Mode Theme Support',
-      reach: 9000,
-      impact: 0.5,
-      confidence: 1.0,
-      effort: 0.5
-    },
-    {
-      id: '4',
-      name: 'Crypto Wallet Integration',
-      reach: 3500,
-      impact: 3.0,
-      confidence: 0.5,
-      effort: 6.0
-    }
-  ]);
+  const { lang } = useLanguage();
 
+  const defaultInitiatives: Initiative[] = lang === 'vi'
+    ? [
+        {
+          id: '1',
+          name: 'Đăng nhập sinh trắc học một chạm',
+          reach: 18000,
+          impact: 2.0,
+          confidence: 1.0,
+          effort: 1.0
+        },
+        {
+          id: '2',
+          name: 'Gợi ý tìm kiếm thông minh bằng AI',
+          reach: 25000,
+          impact: 1.0,
+          confidence: 0.8,
+          effort: 2.0
+        },
+        {
+          id: '3',
+          name: 'Giao diện nền tối (Dark Mode)',
+          reach: 9000,
+          impact: 0.5,
+          confidence: 1.0,
+          effort: 0.5
+        },
+        {
+          id: '4',
+          name: 'Tích hợp thanh toán ví tiền điện tử',
+          reach: 3500,
+          impact: 3.0,
+          confidence: 0.5,
+          effort: 6.0
+        }
+      ]
+    : [
+        {
+          id: '1',
+          name: 'One-Tap Biometric Authentication',
+          reach: 18000,
+          impact: 2.0,
+          confidence: 1.0,
+          effort: 1.0
+        },
+        {
+          id: '2',
+          name: 'AI Smart Search Auto-Suggestions',
+          reach: 25000,
+          impact: 1.0,
+          confidence: 0.8,
+          effort: 2.0
+        },
+        {
+          id: '3',
+          name: 'Dark Mode Theme Support',
+          reach: 9000,
+          impact: 0.5,
+          confidence: 1.0,
+          effort: 0.5
+        },
+        {
+          id: '4',
+          name: 'Crypto Wallet Integration',
+          reach: 3500,
+          impact: 3.0,
+          confidence: 0.5,
+          effort: 6.0
+        }
+      ];
+
+  const [initiatives, setInitiatives] = useState<Initiative[]>(defaultInitiatives);
   const [newName, setNewName] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -82,6 +121,18 @@ export const RiceCanvas: React.FC = () => {
   };
 
   const exportReport = () => {
+    if (lang === 'vi') {
+      return `# Bảng Điểm Ưu Tiên Tính Năng RICE
+
+| Xếp hạng | Sáng kiến / Tính năng | Độ tiếp cận (Reach) | Tác động (Impact) | Độ tự tin (Confidence) | Nỗ lực (Effort) | Điểm RICE |
+|:---:|:---|:---:|:---:|:---:|:---:|:---:|
+${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toLocaleString()} | ${item.impact}x | ${Math.round(item.confidence * 100)}% | ${item.effort} | **${calculateScore(item).toLocaleString()}** |`).join('\n')}
+
+---
+*Công thức: Điểm RICE = (Độ tiếp cận × Mức tác động × Độ tự tin) / Nỗ lực*
+`;
+    }
+
     return `# RICE Prioritization Scorecard
 
 | Rank | Initiative | Reach | Impact | Confidence | Effort (mo) | RICE Score |
@@ -113,9 +164,11 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-400 font-mono text-sm">
               RICE
             </span>
-            RICE Prioritization Calculator
+            {lang === 'vi' ? 'Máy Tính Điểm Ưu Tiên RICE' : 'RICE Prioritization Calculator'}
           </h3>
-          <p className="text-sm text-slate-400">Score roadmap candidates objectively: (Reach × Impact × Confidence) / Effort.</p>
+          <p className="text-sm text-slate-400">
+            {lang === 'vi' ? 'Chấm điểm tính năng khách quan: (Độ tiếp cận × Tác động × Độ tự tin) / Nỗ lực.' : 'Score roadmap candidates objectively: (Reach × Impact × Confidence) / Effort.'}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -123,13 +176,13 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5 transition-colors border border-slate-700"
           >
             {copied ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            {copied ? 'Copied!' : 'Copy Table'}
+            {copied ? (lang === 'vi' ? 'Đã sao chép!' : 'Copied!') : (lang === 'vi' ? 'Sao chép bảng' : 'Copy Table')}
           </button>
           <button
             onClick={handleDownload}
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-cyan-600 hover:bg-cyan-500 text-white flex items-center gap-1.5 transition-colors shadow-sm"
           >
-            <Download className="w-3.5 h-3.5" /> Export .md
+            <Download className="w-3.5 h-3.5" /> {lang === 'vi' ? 'Xuất .md' : 'Export .md'}
           </button>
         </div>
       </div>
@@ -141,14 +194,14 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addInitiative()}
-          placeholder="Enter feature or project name to prioritize..."
+          placeholder={lang === 'vi' ? 'Nhập tên tính năng hoặc dự án cần ưu tiên...' : 'Enter feature or project name to prioritize...'}
           className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
         />
         <button
           onClick={addInitiative}
           className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors"
         >
-          <Plus className="w-4 h-4" /> Add Initiative
+          <Plus className="w-4 h-4" /> {lang === 'vi' ? 'Thêm sáng kiến' : 'Add Initiative'}
         </button>
       </div>
 
@@ -157,13 +210,13 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-950/80 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
             <tr>
-              <th className="py-3 px-4">Rank</th>
-              <th className="py-3 px-4 min-w-[200px]">Initiative</th>
-              <th className="py-3 px-3">Reach (Users)</th>
-              <th className="py-3 px-3">Impact</th>
-              <th className="py-3 px-3">Confidence</th>
-              <th className="py-3 px-3">Effort (mo)</th>
-              <th className="py-3 px-4 text-right">RICE Score</th>
+              <th className="py-3 px-4">{lang === 'vi' ? 'Thứ hạng' : 'Rank'}</th>
+              <th className="py-3 px-4 min-w-[200px]">{lang === 'vi' ? 'Sáng kiến' : 'Initiative'}</th>
+              <th className="py-3 px-3">{lang === 'vi' ? 'Tiếp cận (Users)' : 'Reach (Users)'}</th>
+              <th className="py-3 px-3">{lang === 'vi' ? 'Tác động' : 'Impact'}</th>
+              <th className="py-3 px-3">{lang === 'vi' ? 'Độ tự tin' : 'Confidence'}</th>
+              <th className="py-3 px-3">{lang === 'vi' ? 'Nỗ lực (Tháng)' : 'Effort (mo)'}</th>
+              <th className="py-3 px-4 text-right">{lang === 'vi' ? 'Điểm RICE' : 'RICE Score'}</th>
               <th className="py-3 px-3"></th>
             </tr>
           </thead>
@@ -212,11 +265,11 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
                       onChange={(e) => updateItem(item.id, 'impact', Number(e.target.value))}
                       className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white"
                     >
-                      <option value={3.0}>3.0 - Massive</option>
-                      <option value={2.0}>2.0 - High</option>
-                      <option value={1.0}>1.0 - Medium</option>
-                      <option value={0.5}>0.5 - Low</option>
-                      <option value={0.25}>0.25 - Minimal</option>
+                      <option value={3.0}>3.0 - {lang === 'vi' ? 'Rất lớn' : 'Massive'}</option>
+                      <option value={2.0}>2.0 - {lang === 'vi' ? 'Lớn' : 'High'}</option>
+                      <option value={1.0}>1.0 - {lang === 'vi' ? 'Trung bình' : 'Medium'}</option>
+                      <option value={0.5}>0.5 - {lang === 'vi' ? 'Nhỏ' : 'Low'}</option>
+                      <option value={0.25}>0.25 - {lang === 'vi' ? 'Tối thiểu' : 'Minimal'}</option>
                     </select>
                   </td>
                   <td className="py-3 px-3">
@@ -225,9 +278,9 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
                       onChange={(e) => updateItem(item.id, 'confidence', Number(e.target.value))}
                       className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white"
                     >
-                      <option value={1.0}>100% - High evidence</option>
-                      <option value={0.8}>80% - Medium</option>
-                      <option value={0.5}>50% - Moonshot/Low</option>
+                      <option value={1.0}>100% - {lang === 'vi' ? 'Bằng chứng cao' : 'High evidence'}</option>
+                      <option value={0.8}>80% - {lang === 'vi' ? 'Trung bình' : 'Medium'}</option>
+                      <option value={0.5}>50% - {lang === 'vi' ? 'Ước đoán/Thấp' : 'Moonshot/Low'}</option>
                     </select>
                   </td>
                   <td className="py-3 px-3">
@@ -247,7 +300,7 @@ ${sortedList.map((item, idx) => `| #${idx + 1} | ${item.name} | ${item.reach.toL
                     <button
                       onClick={() => removeItem(item.id)}
                       className="text-slate-600 hover:text-rose-400 p-1 transition-colors"
-                      title="Remove"
+                      title={lang === 'vi' ? 'Xóa' : 'Remove'}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

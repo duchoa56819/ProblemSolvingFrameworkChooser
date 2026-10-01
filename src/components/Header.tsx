@@ -4,6 +4,7 @@ import {
   MapPin, Grid, Layers 
 } from 'lucide-react';
 import { GithubIcon } from './GithubIcon';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface HeaderProps {
   searchQuery: string;
@@ -30,6 +31,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCompare,
   onOpenWizard
 }) => {
+  const { lang, toggleLang, t } = useLanguage();
+
   return (
     <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -42,10 +45,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
-              Framework<span className="text-indigo-400">Chooser</span>
+              {t.appName.slice(0, 9)}<span className="text-indigo-400">{t.appName.slice(9)}</span>
             </span>
             <span className="text-[10px] text-slate-500 block -mt-1 font-mono">
-              Diagnostic & Methods Engine
+              {t.appTagline}
             </span>
           </div>
         </div>
@@ -58,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search by problem, name, author, or keyword (e.g. 5 Whys, Toyota)..."
+              placeholder={t.searchPlaceholder}
               className="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-9 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
             />
             <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-500 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
@@ -77,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Grid className="w-3.5 h-3.5" /> Library
+            <Grid className="w-3.5 h-3.5" /> {t.views.library}
           </button>
           <button
             onClick={() => onViewChange('matrix')}
@@ -87,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <MapPin className="w-3.5 h-3.5" /> 2D Map
+            <MapPin className="w-3.5 h-3.5" /> {t.views.matrix}
           </button>
           <button
             onClick={() => onViewChange('canvases')}
@@ -97,12 +100,22 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Layers className="w-3.5 h-3.5" /> Canvases
+            <Layers className="w-3.5 h-3.5" /> {t.views.canvases}
           </button>
         </div>
 
         {/* Actions right */}
         <div className="flex items-center gap-2">
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 border border-slate-800 hover:border-slate-700 text-slate-200 hover:text-white transition-all shadow-sm"
+            title={lang === 'vi' ? 'Chuyển sang Tiếng Anh (English)' : 'Chuyển sang Tiếng Việt'}
+          >
+            <span className="text-sm">{lang === 'vi' ? '🇻🇳' : '🇺🇸'}</span>
+            <span className="font-mono text-xs">{lang === 'vi' ? 'VI' : 'EN'}</span>
+          </button>
+
           {/* Bookmark filter toggle */}
           <button
             onClick={onToggleBookmarksOnly}
@@ -147,7 +160,8 @@ export const Header: React.FC<HeaderProps> = ({
             className="px-3.5 py-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-600/25 transition-all hover:scale-105"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Diagnostic</span> Finder
+            <span className="hidden sm:inline">{lang === 'vi' ? 'Bộ Chẩn Đoán' : 'Diagnostic Finder'}</span>
+            <span className="sm:hidden">{lang === 'vi' ? 'Chẩn đoán' : 'Finder'}</span>
           </button>
         </div>
       </div>

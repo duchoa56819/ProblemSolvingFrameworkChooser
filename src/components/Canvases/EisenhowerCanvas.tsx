@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, X, Check, Copy, Download, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { copyToClipboard, downloadFile } from '../../utils/export';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 type QuadrantId = 'q1' | 'q2' | 'q3' | 'q4';
 
@@ -11,52 +12,61 @@ interface Task {
   completed: boolean;
 }
 
-const QUADRANTS: Record<QuadrantId, {
-  name: string;
-  action: string;
-  color: string;
-  border: string;
-  desc: string;
-}> = {
-  q1: {
-    name: 'Q1: Urgent & Important',
-    action: 'DO IMMEDIATELY',
-    color: 'text-rose-400 bg-rose-950/30',
-    border: 'border-rose-500/40',
-    desc: 'Crises, system outages, deadline-driven emergencies.'
-  },
-  q2: {
-    name: 'Q2: Not Urgent, but Important',
-    action: 'SCHEDULE DEEP WORK',
-    color: 'text-emerald-400 bg-emerald-950/30',
-    border: 'border-emerald-500/40',
-    desc: 'Strategic planning, refactoring, health, relationships.'
-  },
-  q3: {
-    name: 'Q3: Urgent, Not Important',
-    action: 'DELEGATE / AUTOMATE',
-    color: 'text-amber-400 bg-amber-950/30',
-    border: 'border-amber-500/40',
-    desc: 'Interruptions, ad-hoc meetings, other people’s fires.'
-  },
-  q4: {
-    name: 'Q4: Not Urgent & Not Important',
-    action: 'ELIMINATE / PURGE',
-    color: 'text-slate-400 bg-slate-900/60',
-    border: 'border-slate-800',
-    desc: 'Mindless scrolling, vanity tasks, obsolete syncs.'
-  }
-};
-
 export const EisenhowerCanvas: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([
+  const { lang } = useLanguage();
+
+  const QUADRANTS: Record<QuadrantId, {
+    name: string;
+    action: string;
+    color: string;
+    border: string;
+    desc: string;
+  }> = {
+    q1: {
+      name: lang === 'vi' ? 'Q1: Khẩn cấp & Quan trọng' : 'Q1: Urgent & Important',
+      action: lang === 'vi' ? 'LÀM NGAY LẬP TỨC' : 'DO IMMEDIATELY',
+      color: 'text-rose-400 bg-rose-950/30',
+      border: 'border-rose-500/40',
+      desc: lang === 'vi' ? 'Khủng hoảng, sự cố hệ thống nghiêm trọng, hạn chót nguy cấp.' : 'Crises, system outages, deadline-driven emergencies.'
+    },
+    q2: {
+      name: lang === 'vi' ? 'Q2: Quan trọng, Không khẩn cấp' : 'Q2: Not Urgent, but Important',
+      action: lang === 'vi' ? 'LÊN LỊCH TẬP TRUNG SÂU' : 'SCHEDULE DEEP WORK',
+      color: 'text-emerald-400 bg-emerald-950/30',
+      border: 'border-emerald-500/40',
+      desc: lang === 'vi' ? 'Quy hoạch chiến lược, tối ưu kiến trúc, phòng ngừa rủi ro, đào tạo.' : 'Strategic planning, refactoring, health, relationships.'
+    },
+    q3: {
+      name: lang === 'vi' ? 'Q3: Khẩn cấp, Không quan trọng' : 'Q3: Urgent, Not Important',
+      action: lang === 'vi' ? 'ỦY QUYỀN / TỰ ĐỘNG HÓA' : 'DELEGATE / AUTOMATE',
+      color: 'text-amber-400 bg-amber-950/30',
+      border: 'border-amber-500/40',
+      desc: lang === 'vi' ? 'Sự gián đoạn, họp đột xuất, việc phát sinh không nằm trong mục tiêu cốt lõi.' : 'Interruptions, ad-hoc meetings, other people’s fires.'
+    },
+    q4: {
+      name: lang === 'vi' ? 'Q4: Không khẩn cấp & Không quan trọng' : 'Q4: Not Urgent & Not Important',
+      action: lang === 'vi' ? 'LOẠI BỎ / CẮT GIẢM' : 'ELIMINATE / PURGE',
+      color: 'text-slate-400 bg-slate-900/60',
+      border: 'border-slate-800',
+      desc: lang === 'vi' ? 'Việc lãng phí thời gian, các cuộc họp vô bổ, việc không đem lại giá trị.' : 'Mindless scrolling, vanity tasks, obsolete syncs.'
+    }
+  };
+
+  const defaultTasks: Task[] = lang === 'vi' ? [
+    { id: '1', title: 'Khắc phục sự cố nghẽn kết nối cơ sở dữ liệu trên production', quadrant: 'q1', completed: false },
+    { id: '2', title: 'Thiết kế kiến trúc kiểm thử tự động integration test suite', quadrant: 'q2', completed: false },
+    { id: '3', title: 'Tài liệu hóa kiến trúc hệ thống & đào tạo nội bộ hàng tuần', quadrant: 'q2', completed: false },
+    { id: '4', title: 'Trả lời các email chào hàng không khẩn cấp của đối tác', quadrant: 'q3', completed: false },
+    { id: '5', title: 'Tham gia cuộc họp cập nhật tiến độ 45 phút không có chương trình nghị sự', quadrant: 'q4', completed: false }
+  ] : [
     { id: '1', title: 'Fix database connection timeout bug on production', quadrant: 'q1', completed: false },
     { id: '2', title: 'Design automated integration test suite architecture', quadrant: 'q2', completed: false },
     { id: '3', title: 'Weekly architecture documentation & knowledge sharing', quadrant: 'q2', completed: false },
     { id: '4', title: 'Reply to non-urgent general vendor emails', quadrant: 'q3', completed: false },
     { id: '5', title: 'Attend 45-minute status meeting with no active agenda', quadrant: 'q4', completed: false }
-  ]);
+  ];
 
+  const [tasks, setTasks] = useState<Task[]>(defaultTasks);
   const [newTaskText, setNewTaskText] = useState('');
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantId>('q2');
   const [copied, setCopied] = useState(false);
@@ -95,6 +105,24 @@ export const EisenhowerCanvas: React.FC = () => {
   const q2Percentage = Math.round((q2Tasks / totalTasks) * 100);
 
   const exportReport = () => {
+    if (lang === 'vi') {
+      return `# Báo Cáo Ma Trận Ưu Tiên Eisenhower
+
+## Chỉ số Sức Khỏe Q2 Chiến Lược: ${q2Percentage}% công việc thuộc Góc phần tư 2 (Chiến lược & Đòn bẩy cao)
+
+${(Object.keys(QUADRANTS) as QuadrantId[]).map(qKey => {
+  const qTasks = tasks.filter(t => t.quadrant === qKey);
+  const qInfo = QUADRANTS[qKey];
+  return `### ${qInfo.name} (${qInfo.action})
+${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).join('\n') : '- (Không có)'}
+`;
+}).join('\n')}
+
+---
+*Được tạo bởi Problem-Solving Framework Chooser - Bảng Eisenhower*
+`;
+    }
+
     return `# Eisenhower Priority Matrix
 
 ## Strategic Q2 Health Ratio: ${q2Percentage}% of tasks in High-Leverage Strategic Planning
@@ -132,9 +160,13 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 font-mono text-sm">
               EIS
             </span>
-            Eisenhower Matrix Board
+            {lang === 'vi' ? 'Bảng Ma Trận Ưu Tiên Eisenhower' : 'Eisenhower Matrix Board'}
           </h3>
-          <p className="text-sm text-slate-400">Protect high-leverage Quadrant 2 strategic deep work from urgent noise.</p>
+          <p className="text-sm text-slate-400">
+            {lang === 'vi'
+              ? 'Bảo vệ thời gian làm việc chiến lược Đòn bẩy cao (Góc Q2) khỏi những áp lực khẩn cấp.'
+              : 'Protect high-leverage Quadrant 2 strategic deep work from urgent noise.'}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -142,13 +174,13 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5 transition-colors border border-slate-700"
           >
             {copied ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            {copied ? 'Copied!' : 'Copy Markdown'}
+            {copied ? (lang === 'vi' ? 'Đã sao chép!' : 'Copied!') : (lang === 'vi' ? 'Sao chép Markdown' : 'Copy Markdown')}
           </button>
           <button
             onClick={handleDownload}
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 transition-colors shadow-sm"
           >
-            <Download className="w-3.5 h-3.5" /> Export .md
+            <Download className="w-3.5 h-3.5" /> {lang === 'vi' ? 'Xuất .md' : 'Export .md'}
           </button>
         </div>
       </div>
@@ -160,7 +192,7 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
           value={newTaskText}
           onChange={(e) => setNewTaskText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addTask()}
-          placeholder="Enter task or initiative name..."
+          placeholder={lang === 'vi' ? 'Nhập tên công việc hoặc sáng kiến cần sắp xếp...' : 'Enter task or initiative name...'}
           className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
         />
         <select
@@ -168,16 +200,16 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
           onChange={(e) => setSelectedQuadrant(e.target.value as QuadrantId)}
           className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white"
         >
-          <option value="q1">Q1: Urgent & Important (Do)</option>
-          <option value="q2">Q2: Important, Not Urgent (Schedule)</option>
-          <option value="q3">Q3: Urgent, Not Important (Delegate)</option>
-          <option value="q4">Q4: Neither (Eliminate)</option>
+          <option value="q1">{lang === 'vi' ? 'Q1: Khẩn cấp & Quan trọng (Làm ngay)' : 'Q1: Urgent & Important (Do)'}</option>
+          <option value="q2">{lang === 'vi' ? 'Q2: Quan trọng, Không khẩn cấp (Lên lịch)' : 'Q2: Important, Not Urgent (Schedule)'}</option>
+          <option value="q3">{lang === 'vi' ? 'Q3: Khẩn cấp, Không quan trọng (Ủy quyền)' : 'Q3: Urgent, Not Important (Delegate)'}</option>
+          <option value="q4">{lang === 'vi' ? 'Q4: Không quan trọng & Không khẩn (Loại bỏ)' : 'Q4: Neither (Eliminate)'}</option>
         </select>
         <button
           onClick={addTask}
           className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors"
         >
-          <Plus className="w-4 h-4" /> Add Task
+          <Plus className="w-4 h-4" /> {lang === 'vi' ? 'Thêm việc' : 'Add Task'}
         </button>
       </div>
 
@@ -186,10 +218,14 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-emerald-400" />
           <span className="text-xs font-semibold text-slate-300">
-            Quadrant 2 Health Index: <strong className="text-emerald-400">{q2Percentage}%</strong> of backlog in high-leverage strategic growth
+            {lang === 'vi' ? (
+              <>Chỉ số sức khỏe Góc Q2: <strong className="text-emerald-400">{q2Percentage}%</strong> công việc thuộc phát triển chiến lược dài hạn</>
+            ) : (
+              <>Quadrant 2 Health Index: <strong className="text-emerald-400">{q2Percentage}%</strong> of backlog in high-leverage strategic growth</>
+            )}
           </span>
         </div>
-        <span className="text-[11px] text-slate-500">Target: &gt; 50%</span>
+        <span className="text-[11px] text-slate-500">{lang === 'vi' ? 'Mục tiêu: > 50%' : 'Target: > 50%'}</span>
       </div>
 
       {/* 4 Quadrants Grid */}
@@ -258,7 +294,9 @@ ${qTasks.length ? qTasks.map(t => `- [${t.completed ? 'x' : ' '}] ${t.title}`).j
                   ))}
 
                   {qTasks.length === 0 && (
-                    <div className="text-xs text-slate-600 italic py-6 text-center">No tasks in this quadrant</div>
+                    <div className="text-xs text-slate-600 italic py-6 text-center">
+                      {lang === 'vi' ? 'Chưa có công việc nào trong góc phần tư này' : 'No tasks in this quadrant'}
+                    </div>
                   )}
                 </div>
               </div>

@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Framework, FrameworkCategory, ComplexityLevel, Timeframe, CanvasType } from './types/framework';
 import { FRAMEWORKS, CATEGORY_METADATA } from './data/frameworks';
+import { FRAMEWORKS_VI } from './data/frameworksVi';
+import { useLanguage } from './i18n/LanguageContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { FrameworkCard } from './components/Encyclopedia/FrameworkCard';
@@ -16,6 +18,9 @@ import {
 import { GithubIcon } from './components/GithubIcon';
 
 export default function App() {
+  const { lang, t } = useLanguage();
+  const allFrameworks = lang === 'vi' ? FRAMEWORKS_VI : FRAMEWORKS;
+
   // Navigation & View state
   const [activeView, setActiveView] = useState<'library' | 'matrix' | 'canvases'>('library');
   const [searchQuery, setSearchQuery] = useState('');
@@ -101,7 +106,7 @@ export default function App() {
         return prev.filter(item => item !== id);
       } else {
         if (prev.length >= 3) {
-          alert('You can compare a maximum of 3 frameworks side by side.');
+          alert(lang === 'vi' ? 'Bạn chỉ có thể so sánh tối đa 3 phương pháp cùng lúc.' : 'You can compare a maximum of 3 frameworks side by side.');
           return prev;
         }
         return [...prev, id];
@@ -122,7 +127,7 @@ export default function App() {
 
   // Filtered Frameworks computation
   const filteredFrameworks = useMemo(() => {
-    return FRAMEWORKS.filter(fw => {
+    return allFrameworks.filter(fw => {
       // Bookmark filter
       if (showOnlyBookmarks && !bookmarks.includes(fw.id)) {
         return false;
@@ -158,7 +163,7 @@ export default function App() {
 
       return true;
     });
-  }, [searchQuery, selectedCategory, selectedComplexity, selectedTimeframe, showOnlyBookmarks, bookmarks]);
+  }, [allFrameworks, searchQuery, selectedCategory, selectedComplexity, selectedTimeframe, showOnlyBookmarks, bookmarks]);
 
   const hasActiveFilters = searchQuery !== '' || selectedCategory !== 'all' || selectedComplexity !== 'all' || selectedTimeframe !== 'all' || showOnlyBookmarks;
 
@@ -205,10 +210,9 @@ export default function App() {
                       : 'text-slate-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
-                  All Methods ({FRAMEWORKS.length})
+                  {t.filter.allMethods} ({allFrameworks.length})
                 </button>
                 {(Object.keys(CATEGORY_METADATA) as FrameworkCategory[]).map(catKey => {
-                  const meta = CATEGORY_METADATA[catKey];
                   const isSelected = selectedCategory === catKey;
                   return (
                     <button
@@ -220,7 +224,7 @@ export default function App() {
                           : 'text-slate-400 hover:text-white hover:bg-slate-800'
                       }`}
                     >
-                      {meta.name}
+                      {t.categories[catKey]}
                     </button>
                   );
                 })}
@@ -233,10 +237,10 @@ export default function App() {
                   onChange={(e) => setSelectedComplexity(e.target.value as ComplexityLevel | 'all')}
                   className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 >
-                  <option value="all">Any Complexity</option>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
+                  <option value="all">{t.filter.anyComplexity}</option>
+                  <option value="Beginner">{t.complexity.Beginner}</option>
+                  <option value="Intermediate">{t.complexity.Intermediate}</option>
+                  <option value="Advanced">{t.complexity.Advanced}</option>
                 </select>
 
                 <select
@@ -244,18 +248,18 @@ export default function App() {
                   onChange={(e) => setSelectedTimeframe(e.target.value as Timeframe | 'all')}
                   className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 >
-                  <option value="all">Any Timeframe</option>
-                  <option value="< 1 hour">&lt; 1 hour</option>
-                  <option value="1–2 days">1–2 days</option>
-                  <option value="1–4 weeks">1–4 weeks</option>
-                  <option value="Continuous">Continuous</option>
+                  <option value="all">{t.filter.anyTimeframe}</option>
+                  <option value="< 1 hour">{lang === 'vi' ? '< 1 giờ' : '< 1 hour'}</option>
+                  <option value="1–2 days">{lang === 'vi' ? '1–2 ngày' : '1–2 days'}</option>
+                  <option value="1–4 weeks">{lang === 'vi' ? '1–4 tuần' : '1–4 weeks'}</option>
+                  <option value="Continuous">{lang === 'vi' ? 'Liên tục' : 'Continuous'}</option>
                 </select>
 
                 {hasActiveFilters && (
                   <button
                     onClick={resetFilters}
                     className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                    title="Reset all filters"
+                    title={lang === 'vi' ? 'Đặt lại bộ lọc' : 'Reset all filters'}
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
@@ -266,12 +270,12 @@ export default function App() {
             {/* Results counter & active category summary */}
             <div className="flex items-center justify-between text-xs text-slate-400">
               <div>
-                Showing <strong className="text-white">{filteredFrameworks.length}</strong> of {FRAMEWORKS.length} frameworks
-                {showOnlyBookmarks && ' (Bookmarked only)'}
+                {t.filter.showing} <strong className="text-white">{filteredFrameworks.length}</strong> {t.filter.of} {allFrameworks.length} {t.filter.frameworks}
+                {showOnlyBookmarks && ` ${t.filter.bookmarkedOnly}`}
               </div>
               {selectedCategory !== 'all' && (
                 <span className="italic text-slate-500 hidden sm:inline">
-                  {CATEGORY_METADATA[selectedCategory].description}
+                  {t.categories[selectedCategory]}
                 </span>
               )}
             </div>
@@ -295,15 +299,15 @@ export default function App() {
             ) : (
               <div className="text-center py-16 bg-slate-900/30 rounded-2xl border border-slate-800 space-y-3">
                 <Filter className="w-8 h-8 text-slate-600 mx-auto" />
-                <h3 className="text-base font-bold text-white">No matching frameworks found</h3>
+                <h3 className="text-base font-bold text-white">{t.filter.noResultsTitle}</h3>
                 <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                  Try clearing your search terms or expanding your filter criteria.
+                  {t.filter.noResultsDesc}
                 </p>
                 <button
                   onClick={resetFilters}
                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-medium transition-colors"
                 >
-                  Clear Filters
+                  {t.filter.clearFilters}
                 </button>
               </div>
             )}
@@ -324,10 +328,10 @@ export default function App() {
             <div>
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-indigo-400" />
-                Interactive Problem-Solving Canvases
+                {t.canvasesHub.title}
               </h2>
               <p className="text-sm text-slate-400 mt-1">
-                Don't just read about frameworks—use them right here in your browser with real-time calculations and markdown export.
+                {t.canvasesHub.subtitle}
               </p>
             </div>
 
@@ -336,20 +340,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-rose-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-950/60 text-rose-300 border border-rose-800/40">
-                    ROOT CAUSE
+                    {lang === 'vi' ? 'NGUYÊN NHÂN GỐC RỄ' : 'ROOT CAUSE'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-rose-400 transition-colors">
-                    5 Whys Chain Builder
+                    {lang === 'vi' ? 'Bộ Xây Dựng Chuỗi 5 Whys' : '5 Whys Chain Builder'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Interactive interrogative ladder with automated countermeasure assignment, DRI ownership, and markdown report generator.
+                    {lang === 'vi'
+                      ? 'Thang câu hỏi truy vấn sâu tương tác với phân công biện pháp khắc phục, người phụ trách (DRI) và xuất báo cáo markdown tự động.'
+                      : 'Interactive interrogative ladder with automated countermeasure assignment, DRI ownership, and markdown report generator.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('five-whys')}
                   className="mt-6 w-full py-2 px-3 bg-rose-600/20 hover:bg-rose-600 border border-rose-500/40 text-rose-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open 5 Whys Canvas
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng 5 Whys' : 'Open 5 Whys Canvas'}
                 </button>
               </div>
 
@@ -357,20 +363,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-indigo-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">
-                    DIAGNOSTICS
+                    {lang === 'vi' ? 'CHẨN ĐOÁN TOÀN DIỆN' : 'DIAGNOSTICS'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">
-                    Ishikawa Fishbone (6M) Canvas
+                    {lang === 'vi' ? 'Bảng Xương Cá Ishikawa (6M)' : 'Ishikawa Fishbone (6M) Canvas'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Map multi-variable contributors across Manpower, Machine, Method, Material, Measurement, and Milieu with interactive branches.
+                    {lang === 'vi'
+                      ? 'Phân nhánh đa chiều các yếu tố gây lỗi qua Con người, Máy móc, Phương pháp, Vật liệu, Đo lường và Môi trường.'
+                      : 'Map multi-variable contributors across Manpower, Machine, Method, Material, Measurement, and Milieu with interactive branches.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('fishbone')}
                   className="mt-6 w-full py-2 px-3 bg-indigo-600/20 hover:bg-indigo-600 border border-indigo-500/40 text-indigo-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open Fishbone Canvas
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng Xương Cá' : 'Open Fishbone Canvas'}
                 </button>
               </div>
 
@@ -378,20 +386,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-cyan-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/40">
-                    PRIORITIZATION
+                    {lang === 'vi' ? 'ƯU TIÊN HÓA' : 'PRIORITIZATION'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">
-                    RICE & ICE Calculator
+                    {lang === 'vi' ? 'Máy Tính Điểm RICE & ICE' : 'RICE & ICE Calculator'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Quantify roadmap candidates: (Reach × Impact × Confidence) / Effort with real-time leaderboard sorting.
+                    {lang === 'vi'
+                      ? 'Định lượng tính năng sản phẩm: (Độ tiếp cận × Tác động × Độ tự tin) / Nỗ lực với bảng xếp hạng sắp xếp thời gian thực.'
+                      : 'Quantify roadmap candidates: (Reach × Impact × Confidence) / Effort with real-time leaderboard sorting.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('rice-calc')}
                   className="mt-6 w-full py-2 px-3 bg-cyan-600/20 hover:bg-cyan-600 border border-cyan-500/40 text-cyan-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open RICE Calculator
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Máy Tính RICE' : 'Open RICE Calculator'}
                 </button>
               </div>
 
@@ -399,20 +409,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-emerald-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">
-                    STRATEGY
+                    {lang === 'vi' ? 'CHIẾN LƯỢC' : 'STRATEGY'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">
-                    Cynefin Sense-Making Matrix
+                    {lang === 'vi' ? 'Ma Trận Nhận Thức Cynefin' : 'Cynefin Sense-Making Matrix'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Classify operating reality into Clear, Complicated, Complex, or Chaotic and unlock the correct response posture.
+                    {lang === 'vi'
+                      ? 'Phân loại bối cảnh thực tế thành Rõ ràng, Phức tạp, Rối rắm hoặc Hỗn loạn và mở khóa tư thế phản ứng chuẩn xác.'
+                      : 'Classify operating reality into Clear, Complicated, Complex, or Chaotic and unlock the correct response posture.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('cynefin-tester')}
                   className="mt-6 w-full py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open Cynefin Matrix
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Ma Trận Cynefin' : 'Open Cynefin Matrix'}
                 </button>
               </div>
 
@@ -420,20 +432,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-emerald-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">
-                    EXECUTION
+                    {lang === 'vi' ? 'THỰC THI & QUẢN TRỊ' : 'EXECUTION'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">
-                    Eisenhower Priority Board
+                    {lang === 'vi' ? 'Bảng Ma Trận Ưu Tiên Eisenhower' : 'Eisenhower Priority Board'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Sort tasks into 4 quadrants to protect high-leverage Quadrant 2 strategic deep work with health ratio tracking.
+                    {lang === 'vi'
+                      ? 'Phân loại công việc vào 4 góc phần tư để bảo vệ thời gian làm việc chiến lược sâu (Q2) với theo dõi tỷ lệ sức khỏe.'
+                      : 'Sort tasks into 4 quadrants to protect high-leverage Quadrant 2 strategic deep work with health ratio tracking.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('eisenhower-board')}
                   className="mt-6 w-full py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open Eisenhower Board
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng Eisenhower' : 'Open Eisenhower Board'}
                 </button>
               </div>
 
@@ -441,20 +455,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-pink-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-pink-950/60 text-pink-300 border border-pink-800/40">
-                    INNOVATION
+                    {lang === 'vi' ? 'ĐỔI MỚI SÁNG TẠO' : 'INNOVATION'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-pink-400 transition-colors">
-                    SCAMPER Ideation Prompter
+                    {lang === 'vi' ? 'Bảng Kích Hoạt Sáng Tạo SCAMPER' : 'SCAMPER Ideation Prompter'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Mutate existing products using 7 lateral vectors: Substitute, Combine, Adapt, Modify, Put to other use, Eliminate, Reverse.
+                    {lang === 'vi'
+                      ? 'Đột phá sản phẩm hiện có với 7 hướng tư duy đa chiều: Thay thế, Kết hợp, Thích ứng, Phóng đại, Chuyển đổi mục đích, Loại bỏ, Đảo ngược.'
+                      : 'Mutate existing products using 7 lateral vectors: Substitute, Combine, Adapt, Modify, Put to other use, Eliminate, Reverse.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('scamper-board')}
                   className="mt-6 w-full py-2 px-3 bg-pink-600/20 hover:bg-pink-600 border border-pink-500/40 text-pink-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open SCAMPER Canvas
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng SCAMPER' : 'Open SCAMPER Canvas'}
                 </button>
               </div>
 
@@ -462,20 +478,22 @@ export default function App() {
               <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-amber-500/50 transition-all group">
                 <div className="space-y-2">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/40">
-                    QUALITY & PDCA
+                    {lang === 'vi' ? 'CHẤT LƯỢNG & PDCA' : 'QUALITY & PDCA'}
                   </span>
                   <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
-                    Toyota A3 One-Pager Canvas
+                    {lang === 'vi' ? 'Bảng Một Trang Toyota A3' : 'Toyota A3 One-Pager Canvas'}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Condense an entire complex problem, diagnosis, countermeasure, and execution plan onto an executive one-page sheet.
+                    {lang === 'vi'
+                      ? 'Cô đọng toàn bộ vấn đề phức tạp, phân tích nguyên nhân, giải pháp và kế hoạch thực thi vào một trang báo cáo điều hành chuẩn mực.'
+                      : 'Condense an entire complex problem, diagnosis, countermeasure, and execution plan onto an executive one-page sheet.'}
                   </p>
                 </div>
                 <button
                   onClick={() => setActiveCanvas('a3-canvas')}
                   className="mt-6 w-full py-2 px-3 bg-amber-600/20 hover:bg-amber-600 border border-amber-500/40 text-amber-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" /> Open A3 Canvas
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng Toyota A3' : 'Open A3 Canvas'}
                 </button>
               </div>
             </div>
@@ -487,9 +505,9 @@ export default function App() {
       <footer className="border-t border-slate-800 bg-slate-950/80 mt-16 py-8 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-300">Problem-Solving Framework Chooser</span>
+            <span className="font-bold text-slate-300">{t.appName}</span>
             <span>•</span>
-            <span>Open Source Decision Engine</span>
+            <span>{t.footer.openSource}</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -499,14 +517,14 @@ export default function App() {
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
             >
-              <GithubIcon className="w-4 h-4" /> GitHub Repository
+              <GithubIcon className="w-4 h-4" /> {t.footer.githubRepo}
             </a>
             <span>•</span>
             <button
               onClick={() => setIsWizardOpen(true)}
               className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors font-medium"
             >
-              Take Diagnostic <ArrowRight className="w-3 h-3" />
+              {t.footer.takeDiagnostic} <ArrowRight className="w-3 h-3" />
             </button>
           </div>
         </div>

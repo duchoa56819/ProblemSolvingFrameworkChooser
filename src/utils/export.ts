@@ -1,8 +1,66 @@
 import { Framework, WizardResult } from '../types/framework';
+import { Language } from '../i18n/types';
 
-export function generateMarkdownReport(result: WizardResult): string {
+export function generateMarkdownReport(result: WizardResult, lang: Language = 'vi'): string {
   const fw = result.topFramework;
   const dateStr = new Date().toISOString().split('T')[0];
+
+  if (lang === 'vi') {
+    return `# Báo Cáo Chẩn Đoán Phương Pháp Luận Giải Quyết Vấn Đề
+Ngày lập: ${dateStr}
+
+## 🎯 Phương Pháp Khuyến Nghị Tối Ưu: ${fw.name} (Độ tương thích: ${result.topScore}%)
+**Xuất xứ:** ${fw.origin}  
+**Nhóm phân loại:** ${fw.category.toUpperCase()} | **Độ phức tạp:** ${fw.complexity} | **Thời gian:** ${fw.timeframe} | **Quy mô nhóm:** ${fw.teamSize}  
+**Miền không gian Cynefin:** ${fw.cynefinDomain}
+
+> "${fw.tagline}"
+
+### 💡 Lý Do Phù Hợp Với Bài Toán Của Bạn:
+${result.matchReason}
+
+### 🎯 Ứng Dụng Tốt Nhất Khi:
+${fw.bestFor}
+
+### ⚠️ Cần Tránh Khi:
+${fw.whenToAvoid}
+
+---
+
+## 🛠️ Cẩm Nang Thực Thi Từng Bước
+
+${fw.steps.map(s => `### Bước ${s.number}: ${s.title}
+${s.description}
+*Mẹo thực chiến:* ${s.actionableTip}
+`).join('\n')}
+
+---
+
+## 🔍 Các Câu Hỏi Gợi Ý Chẩn Đoán
+${fw.keyQuestions.map(q => `- [ ] ${q}`).join('\n')}
+
+---
+
+## 🏢 Tình Huống Thực Tế Điển Hình: ${fw.exampleUseCase.title}
+- **Bối cảnh:** ${fw.exampleUseCase.scenario}
+- **Cách áp dụng:** ${fw.exampleUseCase.application}
+- **Kết quả đo lường được:** ${fw.exampleUseCase.outcome}
+
+---
+
+## 🔄 Các Lựa Chọn Thay Thế Khả Thi
+${result.runnerUps.map(r => `1. **${r.framework.name}** (${r.score}%): ${r.fitReason}`).join('\n')}
+
+${result.avoidFrameworks.length > 0 ? `
+---
+
+## ⛔ Các Phương Pháp Nên Tránh Trong Bối Cảnh Này
+${result.avoidFrameworks.map(a => `- **${a.framework.name}**: ${a.reason}`).join('\n')}
+` : ''}
+
+*Báo cáo được khởi tạo từ Problem-Solving Framework Chooser*
+`;
+  }
 
   return `# Problem-Solving Framework Diagnostic Report
 Generated on: ${dateStr}
@@ -60,7 +118,42 @@ ${result.avoidFrameworks.map(a => `- **${a.framework.name}**: ${a.reason}`).join
 `;
 }
 
-export function generateFrameworkMarkdown(fw: Framework): string {
+export function generateFrameworkMarkdown(fw: Framework, lang: Language = 'vi'): string {
+  if (lang === 'vi') {
+    return `# Cẩm Nang Phương Pháp: ${fw.name}
+**Khẩu hiệu:** ${fw.tagline}  
+**Xuất xứ:** ${fw.origin}  
+**Phân loại:** ${fw.category} | **Độ phức tạp:** ${fw.complexity} | **Thời gian:** ${fw.timeframe} | **Nhóm:** ${fw.teamSize}
+
+## Tổng Quan
+${fw.summary}
+
+## Phù Hợp Nhất Khi:
+${fw.bestFor}
+
+## Tránh Sử Dụng Khi:
+${fw.whenToAvoid}
+
+## Các Bước Thực Hiện:
+${fw.steps.map(s => `### Bước ${s.number}: ${s.title}\n${s.description}\n*Mẹo:* ${s.actionableTip}\n`).join('\n')}
+
+## Câu Hỏi Chẩn Đoán:
+${fw.keyQuestions.map(q => `- ${q}`).join('\n')}
+
+## Ví Dụ Thực Tế: ${fw.exampleUseCase.title}
+- **Bối cảnh:** ${fw.exampleUseCase.scenario}
+- **Phương pháp:** ${fw.exampleUseCase.application}
+- **Kết quả:** ${fw.exampleUseCase.outcome}
+
+## Ưu & Nhược Điểm:
+### Điểm mạnh:
+${fw.pros.map(p => `+ ${p}`).join('\n')}
+
+### Hạn chế:
+${fw.cons.map(c => `- ${c}`).join('\n')}
+`;
+  }
+
   return `# Framework Playbook: ${fw.name}
 **Tagline:** ${fw.tagline}  
 **Origin:** ${fw.origin}  

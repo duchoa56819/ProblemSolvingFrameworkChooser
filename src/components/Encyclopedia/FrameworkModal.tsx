@@ -6,6 +6,7 @@ import {
   Check, AlertTriangle, Lightbulb, HelpCircle, Briefcase, Sparkles
 } from 'lucide-react';
 import { generateFrameworkMarkdown, copyToClipboard, downloadFile } from '../../utils/export';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface FrameworkModalProps {
   framework: Framework;
@@ -18,12 +19,13 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
   onClose,
   onOpenCanvas
 }) => {
+  const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'overview' | 'steps' | 'questions' | 'case-study'>('overview');
   const [copied, setCopied] = useState(false);
   const catMeta = CATEGORY_METADATA[framework.category];
 
   const handleCopy = async () => {
-    const text = generateFrameworkMarkdown(framework);
+    const text = generateFrameworkMarkdown(framework, lang);
     const success = await copyToClipboard(text);
     if (success) {
       setCopied(true);
@@ -32,8 +34,8 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
   };
 
   const handleDownload = () => {
-    const text = generateFrameworkMarkdown(framework);
-    downloadFile(`framework-${framework.id}.md`, text);
+    const text = generateFrameworkMarkdown(framework, lang);
+    downloadFile(`framework-${framework.id}-${lang}.md`, text);
   };
 
   return (
@@ -47,7 +49,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${catMeta.badgeColor}`}>
-                {catMeta.name}
+                {t.categories[framework.category]}
               </span>
               <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
                 Cynefin: {framework.cynefinDomain}
@@ -70,7 +72,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                 }}
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 transition-colors shadow-sm"
               >
-                <Play className="w-3.5 h-3.5 fill-current" /> Launch Canvas
+                <Play className="w-3.5 h-3.5 fill-current" /> {t.modal.launchCanvas}
               </button>
             )}
             <button
@@ -78,7 +80,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
               className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5 border border-slate-700 transition-colors"
             >
               {copied ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              {copied ? 'Copied' : 'Copy'}
+              {copied ? t.modal.copied : t.modal.copy}
             </button>
             <button
               onClick={handleDownload}
@@ -106,7 +108,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Overview & Scope
+            {t.modal.overviewTab}
           </button>
           <button
             onClick={() => setActiveTab('steps')}
@@ -116,7 +118,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Step-by-Step Playbook ({framework.steps.length})
+            {t.modal.stepsTab} ({framework.steps.length})
           </button>
           <button
             onClick={() => setActiveTab('questions')}
@@ -126,7 +128,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Diagnostic Questions ({framework.keyQuestions.length})
+            {t.modal.questionsTab} ({framework.keyQuestions.length})
           </button>
           <button
             onClick={() => setActiveTab('case-study')}
@@ -136,7 +138,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Real-World Case Study
+            {t.modal.caseStudyTab}
           </button>
         </div>
 
@@ -157,7 +159,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-1.5">
                   <div className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <Check className="w-4 h-4" /> Best Suited For
+                    <Check className="w-4 h-4" /> {t.modal.bestFor}
                   </div>
                   <p className="text-xs text-slate-200 leading-relaxed">
                     {framework.bestFor}
@@ -166,7 +168,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
 
                 <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 p-4 space-y-1.5">
                   <div className="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4" /> When to Explicitly Avoid
+                    <AlertTriangle className="w-4 h-4" /> {t.modal.whenToAvoid}
                   </div>
                   <p className="text-xs text-slate-200 leading-relaxed">
                     {framework.whenToAvoid}
@@ -177,19 +179,19 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
               {/* Specs Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs">
                 <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Timeframe</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">{t.modal.timeframe}</span>
                   <strong className="text-white">{framework.timeframe}</strong>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Ideal Team Size</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">{t.modal.teamSize}</span>
                   <strong className="text-white">{framework.teamSize}</strong>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Complexity</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">{t.modal.complexityLevel}</span>
                   <strong className="text-white">{framework.complexity}</strong>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Required Tools</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">{t.modal.toolsNeeded}</span>
                   <strong className="text-white truncate block">{framework.toolsNeeded.join(', ')}</strong>
                 </div>
               </div>
@@ -198,7 +200,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" /> Key Strengths
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" /> {t.modal.strengths}
                   </h4>
                   <ul className="space-y-1.5">
                     {framework.pros.map((pro, idx) => (
@@ -211,7 +213,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
 
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400" /> Known Trade-offs & Pitfalls
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400" /> {t.modal.tradeoffs}
                   </h4>
                   <ul className="space-y-1.5">
                     {framework.cons.map((con, idx) => (
@@ -244,7 +246,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
                   </p>
                   <div className="ml-8 mt-2 text-[11px] text-indigo-300 bg-indigo-950/40 border border-indigo-900/40 p-2.5 rounded-lg flex items-start gap-2">
                     <Lightbulb className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
-                    <span><strong>Pro-Tip:</strong> {step.actionableTip}</span>
+                    <span><strong>{t.modal.proTip}:</strong> {step.actionableTip}</span>
                   </div>
                 </div>
               ))}
@@ -255,7 +257,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
           {activeTab === 'questions' && (
             <div className="space-y-3">
               <p className="text-xs text-slate-400">
-                Use these critical diagnostic questions in your team discovery sessions:
+                {t.modal.questionsIntro}
               </p>
               {framework.keyQuestions.map((q, idx) => (
                 <div
@@ -282,7 +284,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
               <div className="space-y-3 text-xs">
                 <div className="space-y-1">
                   <span className="font-semibold text-slate-400 uppercase tracking-wider text-[10px]">
-                    The Challenge / Scenario:
+                    {t.modal.caseChallenge}
                   </span>
                   <p className="text-slate-300 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
                     {framework.exampleUseCase.scenario}
@@ -291,7 +293,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
 
                 <div className="space-y-1">
                   <span className="font-semibold text-indigo-400 uppercase tracking-wider text-[10px]">
-                    How Framework Was Applied:
+                    {t.modal.caseApplication}
                   </span>
                   <p className="text-slate-200 bg-slate-900/80 p-3 rounded-lg border border-indigo-950">
                     {framework.exampleUseCase.application}
@@ -300,7 +302,7 @@ export const FrameworkModal: React.FC<FrameworkModalProps> = ({
 
                 <div className="space-y-1">
                   <span className="font-semibold text-emerald-400 uppercase tracking-wider text-[10px]">
-                    The Measurable Outcome:
+                    {t.modal.caseOutcome}
                   </span>
                   <p className="text-emerald-300 bg-emerald-950/20 p-3 rounded-lg border border-emerald-900/40">
                     {framework.exampleUseCase.outcome}

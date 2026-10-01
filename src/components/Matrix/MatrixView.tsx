@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Framework, FrameworkCategory } from '../../types/framework';
-import { FRAMEWORKS, CATEGORY_METADATA } from '../../data/frameworks';
-import { Sparkles, Eye, Play } from 'lucide-react';
+import { FRAMEWORKS } from '../../data/frameworks';
+import { FRAMEWORKS_VI } from '../../data/frameworksVi';
+import { Eye, Play } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface MatrixViewProps {
   onSelectFramework: (fw: Framework) => void;
@@ -12,12 +14,23 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
   onSelectFramework,
   onOpenCanvas
 }) => {
+  const { lang, t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<FrameworkCategory | 'all'>('all');
   const [hoveredFw, setHoveredFw] = useState<Framework | null>(null);
 
+  const activeFrameworks = lang === 'vi' ? FRAMEWORKS_VI : FRAMEWORKS;
+
   const filteredFrameworks = selectedCategory === 'all'
-    ? FRAMEWORKS
-    : FRAMEWORKS.filter(fw => fw.category === selectedCategory);
+    ? activeFrameworks
+    : activeFrameworks.filter(fw => fw.category === selectedCategory);
+
+  const categories: FrameworkCategory[] = [
+    'root-cause',
+    'strategic',
+    'innovation',
+    'quality',
+    'prioritization'
+  ];
 
   const getCategoryColor = (cat: FrameworkCategory) => {
     switch (cat) {
@@ -39,10 +52,10 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400 font-mono text-sm">
               2D
             </span>
-            Problem Space Landscape Map
+            {t.matrix.title}
           </h2>
           <p className="text-xs text-slate-400">
-            Explore frameworks positioned across Analytical Rigor vs. Creative Divergence and Problem Complexity.
+            {t.matrix.subtitle}
           </p>
         </div>
 
@@ -56,10 +69,9 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            All ({FRAMEWORKS.length})
+            {t.matrix.all} ({activeFrameworks.length})
           </button>
-          {(Object.keys(CATEGORY_METADATA) as FrameworkCategory[]).map(catKey => {
-            const meta = CATEGORY_METADATA[catKey];
+          {categories.map(catKey => {
             const isSelected = selectedCategory === catKey;
             return (
               <button
@@ -71,7 +83,7 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                {meta.name.split(' ')[0]}
+                {t.categories[catKey].split(' ')[0]}
               </button>
             );
           })}
@@ -94,37 +106,35 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
         <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-800/80 dashed pointer-events-none" />
 
         {/* Axis Labels */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold">
-          ▲ High Complexity & Emergence (Turbulent / Human)
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold text-center">
+          {t.matrix.yAxisTop}
         </div>
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold">
-          ▼ Clear Deterministic (Known / Repeatable)
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold text-center">
+          {t.matrix.yAxisBottom}
         </div>
         <div className="absolute left-3 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold">
-          ◄ Pure Analytical & Deductive
+          {t.matrix.xAxisLeft}
         </div>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 origin-right text-[10px] font-mono tracking-widest uppercase text-slate-500 font-semibold">
-          Pure Creative & Generative ►
+          {t.matrix.xAxisRight}
         </div>
 
         {/* Quadrant Watermarks */}
         <div className="absolute top-8 left-8 text-xs font-bold text-slate-800 uppercase tracking-wider pointer-events-none">
-          Strategic Decomposition
+          {t.matrix.watermarkTopLeft}
         </div>
         <div className="absolute top-8 right-8 text-xs font-bold text-slate-800 uppercase tracking-wider pointer-events-none text-right">
-          Emergent Innovation
+          {t.matrix.watermarkTopRight}
         </div>
         <div className="absolute bottom-8 left-8 text-xs font-bold text-slate-800 uppercase tracking-wider pointer-events-none">
-          Root Cause & Variance Reduction
+          {t.matrix.watermarkBottomLeft}
         </div>
         <div className="absolute bottom-8 right-8 text-xs font-bold text-slate-800 uppercase tracking-wider pointer-events-none text-right">
-          Prioritization & Fast Ideation
+          {t.matrix.watermarkBottomRight}
         </div>
 
         {/* Framework Nodes Plotted */}
         {filteredFrameworks.map((fw) => {
-          // X = analyticalVsCreative (0-100) -> 8% to 92%
-          // Y = complexityScore (0-100) -> inverted: 100 is top (8%), 0 is bottom (92%)
           const posX = 8 + (fw.plotCoordinates.analyticalVsCreative / 100) * 84;
           const posY = 92 - (fw.plotCoordinates.complexityScore / 100) * 84;
           const isHovered = hoveredFw?.id === fw.id;
@@ -155,7 +165,7 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
           <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-80 z-40 bg-slate-900/95 backdrop-blur-md p-4 rounded-xl border border-indigo-500/40 shadow-2xl animate-in fade-in slide-in-from-bottom-2">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-800 text-indigo-300">
-                {hoveredFw.category}
+                {t.categories[hoveredFw.category]}
               </span>
               <span className="text-[10px] text-slate-400">
                 {hoveredFw.timeframe}
@@ -172,7 +182,7 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
                 }}
                 className="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-colors"
               >
-                <Eye className="w-3.5 h-3.5" /> View Playbook
+                <Eye className="w-3.5 h-3.5" /> {t.matrix.viewPlaybook}
               </button>
               {hoveredFw.interactiveCanvasType && (
                 <button
@@ -185,7 +195,7 @@ export const MatrixView: React.FC<MatrixViewProps> = ({
                   className="py-1.5 px-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium flex items-center justify-center gap-1 transition-colors"
                   title="Launch Interactive Canvas"
                 >
-                  <Play className="w-3 h-3 fill-current" /> Canvas
+                  <Play className="w-3 h-3 fill-current" /> {t.matrix.canvasBtn}
                 </button>
               )}
             </div>
