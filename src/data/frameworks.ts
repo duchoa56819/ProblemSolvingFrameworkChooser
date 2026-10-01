@@ -469,7 +469,7 @@ export const FRAMEWORKS: Framework[] = [
       'Can feel mechanical if forced onto non-quantitative social dynamics'
     ],
     toolsNeeded: ['Mind mapping software', 'Financial spreadsheets', 'Hypothesis ledger'],
-    interactiveCanvasType: 'action-plan',
+    interactiveCanvasType: 'minto-pyramid',
     plotCoordinates: {
       complexityScore: 65,
       analyticalVsCreative: 25
@@ -1441,6 +1441,74 @@ export const FRAMEWORKS: Framework[] = [
     plotCoordinates: {
       complexityScore: 16,
       analyticalVsCreative: 15
+    }
+  },
+  {
+    id: 'minto-pyramid',
+    name: 'The Minto Pyramid Principle & SCQA Model',
+    shortName: 'Minto Pyramid & SCQA',
+    origin: 'Barbara Minto (McKinsey & Company, 1973)',
+    tagline: 'Structure thinking and communication top-down with Answer-First logic and the SCQA narrative hook.',
+    category: 'strategic',
+    complexity: 'Intermediate',
+    timeframe: '< 1 hour',
+    teamSize: 'Solo',
+    cynefinDomain: 'Complicated',
+    bestFor: 'Executive briefings, board presentations, strategic business proposals, memo writing, and leadership alignment.',
+    whenToAvoid: 'Exploratory creative free-writing, emotional therapy, or situations where the conclusion is genuinely unknown.',
+    summary: 'The Minto Pyramid Principle is the premier structured communication and thinking framework pioneered at McKinsey. It mandates "Answer First" (BLUF - Bottom Line Up Front), where the core governing thought sits at the apex of a pyramid, supported downwards by MECE groupings of logical arguments. It opens with the SCQA storyline (Situation, Complication, Question, Answer) to hook stakeholder attention before laying out the supporting pillars.',
+    steps: [
+      {
+        number: 1,
+        title: 'Craft the SCQA Narrative Hook',
+        description: 'Establish undisputed Situation, introduce the catalyst Complication, formulate the core Question, and state the governing Answer.',
+        actionableTip: 'Ensure the Situation is factual and uncontroversial so all stakeholders start in total agreement.'
+      },
+      {
+        number: 2,
+        title: 'Define the Governing Thought (Apex)',
+        description: 'State the core recommendation or conclusion in a single crisp, actionable sentence at the top of the pyramid.',
+        actionableTip: 'Adopt BLUF (Bottom Line Up Front)—never hide the punchline at the end.'
+      },
+      {
+        number: 3,
+        title: 'Build the Supporting Pillars (Key Line)',
+        description: 'Group 3 to 4 mutually exclusive, collectively exhaustive (MECE) arguments that explain "Why" or "How" the Answer is true.',
+        actionableTip: 'Limit to 3-5 pillars; human working memory cannot retain more in an executive discussion.'
+      },
+      {
+        number: 4,
+        title: 'Substantiate with Evidentiary Data',
+        description: 'Anchor each pillar with concrete empirical facts, metrics, historical precedents, and operational telemetry.',
+        actionableTip: 'Use inductive groupings of facts or tight deductive syllogisms (Premise → Premise → Conclusion).'
+      }
+    ],
+    keyQuestions: [
+      'Did we deliver the core Answer within the first 30 seconds of the briefing?',
+      'Is the Situation non-controversial and accepted by every stakeholder in the room?',
+      'Are our supporting key-line pillars mutually exclusive and collectively exhaustive?',
+      'Could an executive make a confident go/no-go decision reading only the top two tiers?'
+    ],
+    exampleUseCase: {
+      title: 'Global Enterprise Cloud Infrastructure Modernization',
+      scenario: 'VP of Engineering needed board sign-off for a $35M multi-cloud migration project over 18 months.',
+      application: 'Structured pitch via SCQA: (S) Company operates 4 legacy on-premise datacenters. (C) Hardware lease renewal is due in 90 days with maintenance costs jumping 45%. (Q) How do we avoid cost escalations without service disruption? (A) Migrate core workloads to hybrid cloud. Supported by 3 MECE pillars: 1) Mitigate $16M in 3-year costs; 2) Accelerate feature deployment velocity 4x; 3) Meet global SOC2/GDPR compliance.',
+      outcome: 'Board approved the $35M allocation in 20 minutes with zero digression.'
+    },
+    pros: [
+      'Drastically reduces cognitive fatigue for executive decision-makers',
+      'Forces deep intellectual rigor and logical clarity before presenting',
+      'Instantly aligns disparate stakeholders around a shared narrative hook'
+    ],
+    cons: [
+      'Requires strong conviction in the conclusion early on',
+      'Can feel too abrupt for cultures that prioritize indirect inductive storytelling'
+    ],
+    toolsNeeded: ['Executive memo template', 'Pyramid logic canvas', 'SCQA worksheet'],
+    interactiveCanvasType: 'minto-pyramid',
+    plotCoordinates: {
+      complexityScore: 42,
+      analyticalVsCreative: 32
     }
   }
 ];

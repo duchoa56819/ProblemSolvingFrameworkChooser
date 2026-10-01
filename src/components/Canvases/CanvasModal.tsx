@@ -8,6 +8,7 @@ import { CynefinCanvas } from './CynefinCanvas';
 import { EisenhowerCanvas } from './EisenhowerCanvas';
 import { ScamperCanvas } from './ScamperCanvas';
 import { A3Canvas } from './A3Canvas';
+import { MintoPyramidCanvas } from './MintoPyramidCanvas';
 
 interface CanvasModalProps {
   canvasType: CanvasType;
@@ -41,6 +42,7 @@ export const CanvasModal: React.FC<CanvasModalProps> = ({ canvasType, onClose })
           {canvasType === 'scamper-board' && <ScamperCanvas />}
           {canvasType === 'a3-canvas' && <A3Canvas />}
           {canvasType === 'action-plan' && <A3Canvas />}
+          {canvasType === 'minto-pyramid' && <MintoPyramidCanvas />}
         </div>
       </div>
     </div>

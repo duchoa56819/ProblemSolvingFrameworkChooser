@@ -469,7 +469,7 @@ export const FRAMEWORKS_VI: Framework[] = [
       'Có thể tạo cảm giác máy móc nếu áp dụng vào các vấn đề văn hóa xã hội phi định lượng'
     ],
     toolsNeeded: ['Phần mềm vẽ sơ đồ tư duy', 'Bảng tính mô hình tài chính', 'Sổ theo dõi giả thuyết'],
-    interactiveCanvasType: 'action-plan',
+    interactiveCanvasType: 'minto-pyramid',
     plotCoordinates: {
       complexityScore: 65,
       analyticalVsCreative: 25
@@ -1441,6 +1441,74 @@ export const FRAMEWORKS_VI: Framework[] = [
     plotCoordinates: {
       complexityScore: 16,
       analyticalVsCreative: 15
+    }
+  },
+  {
+    id: 'minto-pyramid',
+    name: 'Nguyên Lý Kim Tự Tháp Minto & Mô Hình SCQA',
+    shortName: 'Kim Tự Tháp Minto & SCQA',
+    origin: 'Barbara Minto (McKinsey & Company, 1973)',
+    tagline: 'Cấu trúc tư duy và giao tiếp đỉnh cao từ trên xuống với tư duy Câu trả lời trước (Answer-First) và cốt truyện SCQA.',
+    category: 'strategic',
+    complexity: 'Intermediate',
+    timeframe: '< 1 hour',
+    teamSize: 'Solo',
+    cynefinDomain: 'Complicated',
+    bestFor: 'Báo cáo điều hành, thuyết trình hội đồng quản trị, soạn thảo đề xuất chiến lược, viết thông cáo và thống nhất quan điểm lãnh đạo.',
+    whenToAvoid: 'Viết tự do sáng tạo nghệ thuật, tư vấn tâm lý trị liệu, hoặc khi kết luận thực sự chưa được phát hiện.',
+    summary: 'Nguyên lý Kim Tự Tháp Minto (Minto Pyramid Principle) là chuẩn mực giao tiếp và tư duy có cấu trúc số một được tiên phong tại McKinsey. Phương pháp này áp dụng nguyên tắc "Answer First" (Đưa thông điệp trọng tâm lên đầu - BLUF), trong đó kết luận cốt lõi nằm ở đỉnh kim tự tháp, được nâng đỡ từ dưới lên bởi các luận điểm MECE chặt chẽ. Đi cùng là mô hình mở đầu SCQA (Situation - Bối cảnh, Complication - Thách thức, Question - Câu hỏi cốt lõi, Answer - Giải pháp) giúp cuốn hút người nghe ngay từ giây đầu tiên.',
+    steps: [
+      {
+        number: 1,
+        title: 'Thiết lập Cốt truyện Mở đầu SCQA',
+        description: 'Xác định Bối cảnh không tranh cãi (S), đưa ra Biến cố kích hoạt (C), đặt Câu hỏi trọng tâm (Q) và đưa ra Câu trả lời cốt lõi (A).',
+        actionableTip: 'Đảm bảo phần Bối cảnh (S) là sự thật khách quan mà tất cả các bên liên quan đều đồng thuận 100%.'
+      },
+      {
+        number: 2,
+        title: 'Xác lập Thông điệp Trọng tâm tại Đỉnh Kim Tự Tháp',
+        description: 'Tuyên bố khuyến nghị hoặc kết luận mang tính hành động cao nhất trong đúng một câu duy nhất rõ ràng.',
+        actionableTip: 'Áp dụng BLUF (Bottom Line Up Front) — tuyệt đối không giấu câu trả lời xuống cuối bài báo cáo.'
+      },
+      {
+        number: 3,
+        title: 'Xây dựng Các Trụ Cột Luận Điểm Nâng Đỡ (Key Line)',
+        description: 'Nhóm 3 đến 4 luận điểm trụ cột độc lập và toàn diện (MECE) để giải thích lý do "Tại sao" hoặc "Làm thế nào" kết luận là đúng.',
+        actionableTip: 'Chỉ nên gói gọn trong 3-5 trụ cột; bộ nhớ ngắn hạn của lãnh đạo cấp cao không thể nạp quá nhiều thông tin cùng lúc.'
+      },
+      {
+        number: 4,
+        title: 'Chứng minh bằng Dữ liệu và Bằng chứng Thực nghiệm',
+        description: 'Hỗ trợ từng trụ cột bằng số liệu định lượng, tiền lệ thực tế, thước đo hiệu suất và cơ sở logic vững chắc.',
+        actionableTip: 'Sử dụng nhóm logic quy nạp (các sự kiện cùng tính chất) hoặc diễn dịch chặt chẽ (Tiền đề 1 → Tiền đề 2 → Kết luận).'
+      }
+    ],
+    keyQuestions: [
+      'Chúng ta đã đưa ra câu trả lời trọng tâm trong 30 giây đầu tiên của buổi trình bày chưa?',
+      'Bối cảnh (Situation) có phải là điều hiển nhiên mà mọi người trong phòng đều đồng ý không?',
+      'Các trụ cột luận điểm bên dưới có đảm bảo tính MECE (không trùng lặp, không bỏ sót) không?',
+      'Lãnh đạo có thể ra quyết định chuẩn xác chỉ bằng cách đọc 2 tầng trên cùng của kim tự tháp không?'
+    ],
+    exampleUseCase: {
+      title: 'Đề Xuất Chuyển Đổi Hạ Tầng Đám Mây Doanh Nghiệp Toàn Cầu',
+      scenario: 'Giám đốc Kỹ thuật cần Hội đồng Quản trị phê duyệt ngân sách 35 triệu USD cho dự án chuyển đổi hạ tầng đám mây trong 18 tháng.',
+      application: 'Áp dụng SCQA: (S) Doanh nghiệp vận hành 4 trung tâm dữ liệu on-premise trên thế giới. (C) Hợp đồng thuê thiết bị hết hạn sau 90 ngày và chi phí bảo trì tăng vọt 45%. (Q) Làm sao giải quyết bài toán chi phí mà không làm gián đoạn vận hành? (A) Chuyển đổi toàn bộ lên kiến trúc hybrid cloud. Được bảo vệ bởi 3 trụ cột MECE: 1) Tiết kiệm 16 triệu USD trong 3 năm; 2) Tăng tốc độ triển khai tính năng gấp 4 lần; 3) Đáp ứng chuẩn bảo mật quốc tế SOC2/GDPR.',
+      outcome: 'Hội đồng Quản trị phê duyệt đồng thuận 100% trong 20 phút mà không có bất kỳ tranh cãi kỹ thuật lan man nào.'
+    },
+    pros: [
+      'Giảm thiểu đáng kể sự mệt mỏi nhận thức cho các nhà lãnh đạo ra quyết định',
+      'Buộc người thuyết trình phải tư duy logic chặt chẽ và sâu sắc trước khi mở lời',
+      'Thống nhất các bên liên quan tức thì thông qua cốt truyện tự nhiên'
+    ],
+    cons: [
+      'Đòi hỏi người thực hiện phải có lập trường vững chắc và kết luận rõ ràng ngay từ đầu',
+      'Có thể tạo cảm giác quá trực diện đối với những văn hóa quen cách diễn đạt quy nạp vòng vo'
+    ],
+    toolsNeeded: ['Bản ghi chú điều hành (Executive memo)', 'Bảng vẽ kim tự tháp logic', 'Biểu mẫu SCQA'],
+    interactiveCanvasType: 'minto-pyramid',
+    plotCoordinates: {
+      complexityScore: 42,
+      analyticalVsCreative: 32
     }
   }
 ];

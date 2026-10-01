@@ -496,6 +496,29 @@ export default function App() {
                   <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng Toyota A3' : 'Open A3 Canvas'}
                 </button>
               </div>
+
+              {/* Canvas 8: Minto Pyramid & SCQA */}
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 flex flex-col justify-between hover:border-indigo-500/50 transition-all group">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">
+                    {lang === 'vi' ? 'GIAO TIẾP & CHIẾN LƯỢC' : 'EXECUTIVE STRATEGY'}
+                  </span>
+                  <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">
+                    {lang === 'vi' ? 'Kim Tự Tháp Minto & SCQA' : 'Minto Pyramid & SCQA Canvas'}
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {lang === 'vi'
+                      ? 'Cấu trúc thông điệp thuyết phục lãnh đạo với cốt truyện mở đầu SCQA, nguyên tắc Answer-First và các trụ cột logic MECE.'
+                      : 'Structure executive briefings with the SCQA storytelling hook, Answer-First logic (BLUF), and supporting MECE pyramid pillars.'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setActiveCanvas('minto-pyramid')}
+                  className="mt-6 w-full py-2 px-3 bg-indigo-600/20 hover:bg-indigo-600 border border-indigo-500/40 text-indigo-200 hover:text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" /> {lang === 'vi' ? 'Mở Bảng Kim Tự Tháp Minto' : 'Open Minto Pyramid Canvas'}
+                </button>
+              </div>
             </div>
           </div>
         )}

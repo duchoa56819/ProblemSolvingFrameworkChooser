@@ -21,7 +21,8 @@ export type CanvasType =
   | 'eisenhower-board' 
   | 'scamper-board' 
   | 'a3-canvas' 
-  | 'action-plan';
+  | 'action-plan'
+  | 'minto-pyramid';
 
 export interface FrameworkStep {
   number: number;
