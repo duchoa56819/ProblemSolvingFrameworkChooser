@@ -1,0 +1,55 @@
+{
+  "name": "problem-solving-framework-chooser",
+  "private": true,
+  "version": "1.0.0",
+  "description": "An interactive diagnostic engine and workspace for choosing and applying the right problem-solving framework (5 Whys, Cynefin, MECE, TRIZ, Design Thinking, DMAIC, RICE, 8D, and more).",
+  "type": "module",
+  "homepage": "https://duchoa56819.github.io/ProblemSolvingFrameworkChooser/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/duchoa56819/ProblemSolvingFrameworkChooser.git"
+  },
+  "keywords": [
+    "problem-solving",
+    "frameworks",
+    "cynefin",
+    "five-whys",
+    "fishbone",
+    "mece",
+    "triz",
+    "design-thinking",
+    "dmaic",
+    "ooda-loop",
+    "decision-making",
+    "react",
+    "typescript",
+    "tailwind"
+  ],
+  "author": "duchoa56819",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.49.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}
